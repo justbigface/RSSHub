@@ -30,11 +30,11 @@ const weiboUtils = {
         let coolingDown: boolean = false;
 
         return async (renew: any = false) => {
-            if (config.weibo.cookies) {
-                if (renew) {
-                    throw new Error('Cookies expired. Please update WEIBO_COOKIES');
-                }
+            if (config.weibo.cookies && !renew) {
                 return config.weibo.cookies;
+            }
+            if (config.weibo.cookies && renew) {
+                logger.warn('WEIBO_COOKIES expired, trying to renew via Puppeteer...');
             }
 
             const cacheKey = 'weibo:visitor-cookies';
